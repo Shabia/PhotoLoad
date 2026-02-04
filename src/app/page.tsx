@@ -31,6 +31,9 @@ export default function Home() {
   const [authLoading, setAuthLoading] = useState(true);
   const [uploadingFiles, setUploadingFiles] = useState<UploadingFile[]>([]);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteAccountLoading, setDeleteAccountLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [supabase] = useState(() => createClient());
 
@@ -61,6 +64,28 @@ export default function Home() {
   async function signOut() {
     await supabase.auth.signOut();
     setView("signup");
+  }
+
+  async function deleteAccount() {
+    if (!user) return;
+    setDeleteAccountLoading(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch("/api/delete-account", { method: "POST" });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setDeleteError(data?.error ?? "Delete failed");
+        setDeleteAccountLoading(false);
+        return;
+      }
+      setShowDeleteConfirm(false);
+      await supabase.auth.signOut();
+      setView("signup");
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : "Delete failed");
+    } finally {
+      setDeleteAccountLoading(false);
+    }
   }
 
   async function fetchPhotos() {
@@ -565,6 +590,11 @@ export default function Home() {
           {view === "settings" && (
             <>
               <h1 className="photoload-title">Settings</h1>
+              {deleteError && (
+                <p style={{ color: "#c00", marginBottom: 16, textAlign: "center", fontSize: 14 }}>
+                  {deleteError}
+                </p>
+              )}
               <div
                 style={{
                   borderRadius: 12,
@@ -589,7 +619,10 @@ export default function Home() {
                 >
                   Sign out
                 </button>
-                <button className="photoload-primary-button">
+                <button
+                  className="photoload-primary-button"
+                  onClick={() => setShowDeleteConfirm(true)}
+                >
                   Delete Account
                 </button>
               </div>
@@ -597,6 +630,53 @@ export default function Home() {
           )}
         </div>
       </main>
+
+      {showDeleteConfirm && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => !deleteAccountLoading && setShowDeleteConfirm(false)}
+        >
+          <div
+            style={{
+              background: "white",
+              borderRadius: 12,
+              padding: 24,
+              maxWidth: 400,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.2)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p style={{ marginBottom: 16, fontSize: 16 }}>
+              Are you sure? This will permanently delete your account and all your photos.
+            </p>
+            <div style={{ display: "flex", gap: 12, justifyContent: "flex-end" }}>
+              <button
+                className="photoload-secondary-button"
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={deleteAccountLoading}
+              >
+                Cancel
+              </button>
+              <button
+                className="photoload-primary-button"
+                style={{ background: "#c00" }}
+                onClick={deleteAccount}
+                disabled={deleteAccountLoading}
+              >
+                {deleteAccountLoading ? "Deleting…" : "Delete account"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
