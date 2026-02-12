@@ -1,6 +1,6 @@
  "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
@@ -23,7 +23,7 @@ type Photo = {
 
 type UploadingFile = { file: File; progress: number; error?: string };
 
-export default function Home() {
+function HomeContent() {
   const [view, setView] = useState<View>("signup");
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -797,5 +797,27 @@ export default function Home() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "system-ui",
+          }}
+        >
+          Loading…
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
   );
 }
