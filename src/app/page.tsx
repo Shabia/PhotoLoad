@@ -385,14 +385,7 @@ function HomeContent() {
 
           {view === "viewPhoto" && selectedPhoto && (
             <>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: 24,
-                }}
-              >
+              <div className="view-photo-header">
                 <button
                   className="photoload-secondary-button"
                   onClick={() => {
@@ -402,45 +395,24 @@ function HomeContent() {
                 >
                   ← Back
                 </button>
-                <h1 className="photoload-title" style={{ margin: 0 }}>
-                  View Images
-                </h1>
-                <div style={{ width: 80 }} />
+                <h1 className="view-photo-title">View Images</h1>
+                <div style={{ width: 80 }} className="view-photo-header-spacer" aria-hidden />
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: 24,
-                }}
-              >
-                <div
-                  style={{
-                    flex: 1,
-                    borderRadius: 8,
-                    border: "1px solid #ddd",
-                    padding: 16,
-                    background: "white",
-                  }}
-                >
+              <div className="view-photo-layout">
+                <div className="view-photo-image-wrap">
                   {photoUrls[selectedPhoto.id] ? (
                     <img
                       src={photoUrls[selectedPhoto.id]}
                       alt={selectedPhoto.filename ?? "Photo"}
-                      style={{
-                        width: "100%",
-                        height: 360,
-                        objectFit: "contain",
-                      }}
+                      className="view-photo-image"
                     />
                   ) : (
-                    <div style={{ width: "100%", height: 360, background: "#eee" }} />
+                    <div className="view-photo-image view-photo-image-placeholder" style={{ background: "#eee" }} />
                   )}
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
+                <div className="view-photo-actions">
                   <button
                     className="photoload-primary-button"
                     onClick={() => setView("upload")}
@@ -452,7 +424,7 @@ function HomeContent() {
                     <p style={{ margin: "0 0 12px", fontSize: 14, fontWeight: 500, color: "#333" }}>
                       Share with friends
                     </p>
-                    <div style={{ display: "flex", gap: 16, alignItems: "flex-end" }}>
+                    <div className="view-photo-share-row">
                       <button
                         type="button"
                         onClick={async () => {
@@ -545,10 +517,10 @@ function HomeContent() {
                         </svg>
                       </a>
                     </div>
-                    <div style={{ display: "flex", gap: 16, marginTop: 6, fontSize: 12, color: "#666" }}>
-                      <span style={{ width: 48, textAlign: "center" }}>{copyLinkFeedback ? "Copied!" : "Copy link"}</span>
-                      <span style={{ width: 48, textAlign: "center" }}>WhatsApp</span>
-                      <span style={{ width: 48, textAlign: "center" }}>Instagram</span>
+                    <div className="view-photo-share-labels">
+                      <span>{copyLinkFeedback ? "Copied!" : "Copy link"}</span>
+                      <span>WhatsApp</span>
+                      <span>Instagram</span>
                     </div>
                   </div>
 

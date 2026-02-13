@@ -24,10 +24,22 @@ body {
   padding: 24px 56px;
 }
 
+@media (max-width: 768px) {
+  .photoload-header {
+    padding: 16px 16px;
+  }
+}
+
 .photoload-logo {
   font-family: "Georgia", "Times New Roman", serif;
   font-size: 28px;
   font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .photoload-logo {
+    font-size: 20px;
+  }
 }
 
 .photoload-nav {
@@ -96,4 +108,131 @@ body {
   background: white;
   cursor: pointer;
   font-size: 14px;
+}
+
+/* View Image page: mobile-friendly layout */
+@media (max-width: 768px) {
+  .photoload-main {
+    padding: 16px 12px 24px;
+    align-items: flex-start;
+  }
+  .photoload-panel {
+    padding: 20px 16px 24px;
+  }
+}
+
+.view-photo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.view-photo-header-spacer {
+  width: 0;
+}
+
+@media (min-width: 769px) {
+  .view-photo-header-spacer {
+    width: 80px;
+  }
+}
+
+.view-photo-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+@media (min-width: 769px) {
+  .view-photo-title {
+    font-size: 2.25rem;
+  }
+}
+
+.view-photo-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 769px) {
+  .view-photo-layout {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.view-photo-image-wrap {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  background: white;
+  min-height: 200px;
+}
+
+@media (min-width: 769px) {
+  .view-photo-image-wrap {
+    flex: 1;
+    padding: 16px;
+    min-height: 0;
+  }
+}
+
+.view-photo-image {
+  width: 100%;
+  height: 240px;
+  object-fit: contain;
+}
+
+@media (min-width: 769px) {
+  .view-photo-image {
+    height: 360px;
+  }
+}
+
+.view-photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+  width: 100%;
+}
+
+@media (min-width: 769px) {
+  .view-photo-actions {
+    width: auto;
+    align-items: flex-start;
+  }
+}
+
+.view-photo-share-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.view-photo-share-labels {
+  display: flex;
+  gap: 16px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.view-photo-share-labels span {
+  width: 48px;
+  text-align: center;
+}
+
+.view-photo-image-placeholder {
+  background: #eee;
 }
